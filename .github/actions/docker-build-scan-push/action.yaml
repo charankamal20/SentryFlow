@@ -60,7 +60,7 @@ runs:
   using: composite
   steps:
   - name: Docker build
-    uses: accuknox/common-gh-actions/actions/docker-build@main
+    uses: ./.github/actions/docker-build-scan-push@main
     id: docker-build
     with:
       docker-context: ${{ inputs.docker_context }}

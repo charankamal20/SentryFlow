@@ -53,13 +53,13 @@ jobs:
 
   release-envoy-filter-sidecar-image:
     needs: [ files-changed ]
-    if: ${{ github.repository == 'accuknox/sentryflow' && (github.event_name == 'create' || needs.files-changed.outputs.envoyfilter == 'true') }}
+    if: ${{ github.repository == 'charankamal20/sentryflow' && (github.event_name == 'create' || needs.files-changed.outputs.envoyfilter == 'true') }}
     name: Build and push envoy sidecar filter image
     uses: ./.github/workflows/release-image.yaml 
     with:
       WORKING_DIRECTORY: ./filter/envoy/envoy-wasm-filters
-      NAME: sentryflow-httpfilter
-      ECR_REPOSITORY: public.ecr.aws/k9v9d5v2
+      NAME: sentryflow
+      ECR_REPOSITORY: public.ecr.aws/n0f9y4y1
       REGISTRY_TYPE: public
       DOCKER_BUILD_ARGS: "PLUGIN_TYPE=sidecar"
       IMAGE_TAG: "latest-sidecar"              #    secrets:
@@ -69,13 +69,13 @@ jobs:
 
   release-envoy-filter-gateway-image:
     needs: [ files-changed ]
-    if: ${{ github.repository == 'accuknox/sentryflow' && (github.event_name == 'create' || needs.files-changed.outputs.envoyfilter == 'true') }}
+    if: ${{ github.repository == 'charankamal20/sentryflow' && (github.event_name == 'create' || needs.files-changed.outputs.envoyfilter == 'true') }}
     name: Build and push envoy gateway filter image
     uses: ./.github/workflows/release-image.yaml 
     with:
       WORKING_DIRECTORY: ./filter/envoy/envoy-wasm-filters
-      NAME: sentryflow-httpfilter
-      ECR_REPOSITORY: public.ecr.aws/k9v9d5v2
+      NAME: sentryflow
+      ECR_REPOSITORY: public.ecr.aws/n0f9y4y1
       REGISTRY_TYPE: public
       DOCKER_BUILD_ARGS: "PLUGIN_TYPE=gateway"
       IMAGE_TAG: "latest-gateway"              #    secrets:

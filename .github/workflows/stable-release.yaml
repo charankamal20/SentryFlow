@@ -9,7 +9,7 @@ on:
       - "v*"
   push:
     branches:
-      - "*"
+      - "CNAPP-23269/integrate-wasm-plugin-for-istio-gateway"
   pull_request:
     types: [ opened, reopened, synchronize, ready_for_review ]
     paths:

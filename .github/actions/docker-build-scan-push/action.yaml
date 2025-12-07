@@ -60,7 +60,7 @@ runs:
   using: composite
   steps:
   - name: Docker build
-    uses: ./.github/actions/docker-build-scan-push@main
+    uses: ./.github/actions/docker-build@main
     id: docker-build
     with:
       docker-context: ${{ inputs.docker_context }}

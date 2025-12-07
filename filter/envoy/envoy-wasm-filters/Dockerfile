@@ -11,7 +11,7 @@ WORKDIR /envoy-plugin
 
 COPY . .
 
-RUN make toolchain build
+RUN make toolchain
 
 # Build the plugin with appropriate feature flag
 RUN if [ "${PLUGIN_TYPE}" = "gateway" ]; then \

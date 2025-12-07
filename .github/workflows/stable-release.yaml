@@ -64,7 +64,7 @@ jobs:
       NAME: sentryflow
       ECR_REPOSITORY: public.ecr.aws/n0f9y4y1
       REGISTRY_TYPE: public
-      DOCKER_BUILD_ARGS: "PLUGIN_TYPE=sidecar"
+      DOCKER_BUILD_ARGS: "--build-arg PLUGIN_TYPE=sidecar"
       IMAGE_TAG: "latest-sidecar"              #    secrets:
     secrets:
       AWS_DEV_ACCESS_ID: ${{ secrets.AWS_DEV_ACCESS_ID }}
@@ -80,7 +80,7 @@ jobs:
       NAME: sentryflow
       ECR_REPOSITORY: public.ecr.aws/n0f9y4y1
       REGISTRY_TYPE: public
-      DOCKER_BUILD_ARGS: "PLUGIN_TYPE=gateway"
+      DOCKER_BUILD_ARGS: "--build-arg PLUGIN_TYPE=gateway"
       IMAGE_TAG: "latest-gateway"              #    secrets:
     secrets:
       AWS_DEV_ACCESS_ID: ${{ secrets.AWS_DEV_ACCESS_ID }}

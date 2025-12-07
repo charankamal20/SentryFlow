@@ -65,10 +65,14 @@ jobs:
       - name: Get tag
         id: tag
         run: |
-          if [ ${{ github.ref }} == "refs/heads/main" ]; then
-            echo "tag=latest" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+          if [ ${{ inputs.IMAGE_TAG }} == "" ]; then
+            if [ ${{ github.ref }} == "refs/heads/main" ]; then
+              echo "tag=latest" >> $GITHUB_OUTPUT
+            else
+              echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+            fi
+          else 
+            echo "tag=${{ inputs.IMAGE_TAG }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Docker build, scan and push to ECR

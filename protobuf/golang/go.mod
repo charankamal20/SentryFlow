@@ -1,4 +1,4 @@
-module github.com/accuknox/SentryFlow/protobuf/golang
+module github.com/charankamal20/SentryFlow/protobuf/golang
 
 go 1.24.1
 

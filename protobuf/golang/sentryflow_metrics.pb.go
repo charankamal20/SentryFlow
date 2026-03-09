@@ -122,7 +122,7 @@ const file_sentryflow_metrics_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x04R\x05value:\x028\x012d\n" +
 	"\rAPIClassifier\x12S\n" +
-	"\fClassifyAPIs\x12\x1e.protobuf.APIClassifierRequest\x1a\x1f.protobuf.APIClassifierResponse(\x010\x01B0Z.github.com/accuknox/SentryFlow/protobuf/golangb\x06proto3"
+	"\fClassifyAPIs\x12\x1e.protobuf.APIClassifierRequest\x1a\x1f.protobuf.APIClassifierResponse(\x010\x01B5Z3github.com/charankamal20/SentryFlow/protobuf/golangb\x06proto3"
 
 var (
 	file_sentryflow_metrics_proto_rawDescOnce sync.Once

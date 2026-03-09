@@ -1,4 +1,4 @@
-module github.com/accuknox/SentryFlow/sentryflow
+module github.com/charankamal20/SentryFlow/sentryflow
 
 go 1.24.1
 

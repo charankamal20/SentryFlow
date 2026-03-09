@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package protobuf;
 
-option go_package = "github.com/accuknox/SentryFlow/protobuf/golang";
+option go_package = "github.com/charankamal20/SentryFlow/protobuf/golang";
 
 message ClientInfo {
   string hostName = 1;
@@ -46,6 +46,9 @@ message APIEvent {
   Request request = 5;
   Response response = 6;
   string protocol = 7;
+
+  // End-to-end observed latency in nanoseconds.
+  uint64 latency_ns = 8;
 }
 
 message Metadata {
@@ -80,12 +83,24 @@ message Workload {
 
   // The port number used by the workload.
   int32 port = 4;
+
+  // Kubernetes labels for policy matching.
+  map<string, string> labels = 5;
+
+  // Workload kind: "Pod", "Service", "External".
+  string kind = 6;
 }
 
 // Request represents an incoming HTTP request.
 message Request {
   map<string, string> headers = 1;
   string body = 2;
+
+  // HTTP method (GET, POST, etc.) or gRPC method name.
+  string method = 3;
+
+  // URL path or gRPC full method path (e.g. /pkg.Svc/Method).
+  string path = 4;
 }
 
 // Response represents an outgoing HTTP response.
@@ -93,6 +108,9 @@ message Response {
   map<string, string> headers = 1;
   string body = 2;
   uint64 backend_latency_in_nanos = 3;
+
+  // HTTP status code or gRPC status code.
+  int32 status_code = 4;
 }
 
 message APIMetrics {

@@ -43,8 +43,14 @@ message APIEvent {
   Metadata metadata = 1;
   Workload source = 3;
   Workload destination = 4;
-  Request request = 5;
-  Response response = 6;
+  oneof req {
+    Request request = 5;
+    DNSRequest dns_request = 9;
+  }
+  oneof res {
+    Response response = 6;
+    DNSResponse dns_response = 10;
+  }
   string protocol = 7;
 
   // End-to-end observed latency in milliseconds.
@@ -126,6 +132,17 @@ message Response {
 
   // Human-readable gRPC error message from grpc-message trailer.
   string grpc_status_message = 6;
+}
+
+message DNSRequest {
+  string query_name = 1;
+  string query_type = 2; // e.g., "A", "AAAA"
+}
+
+message DNSResponse {
+  int32 rcode = 1;       // 0 for NoError, 3 for NXDomain
+  string rcode_name = 2; // e.g. "NoError"
+  repeated string resolved_ips = 3;
 }
 
 message APIMetrics {

@@ -215,20 +215,24 @@ func getDummyApiEvent(ctxId int) *protobuf.APIEvent {
 			Ip:        "93.184.215.14",
 			Port:      int32(rand.IntnRange(80, 65536)),
 		},
-		Request: &protobuf.Request{
-			Headers: map[string]string{
-				":authority": "example.com",
-				":method":    "GET",
-				":path":      "/",
-				":scheme":    "http",
+		Req: &protobuf.APIEvent_Request{
+			Request: &protobuf.Request{
+				Headers: map[string]string{
+					":authority": "example.com",
+					":method":    "GET",
+					":path":      "/",
+					":scheme":    "http",
+				},
+				Body: "request body",
 			},
-			Body: "request body",
 		},
-		Response: &protobuf.Response{
-			Headers: map[string]string{
-				":status": "200",
+		Res: &protobuf.APIEvent_Response{
+			Response: &protobuf.Response{
+				Headers: map[string]string{
+					":status": "200",
+				},
+				Body: "response body",
 			},
-			Body: "response body",
 		},
 		Protocol: "HTTP/1.1",
 	}

@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"google.golang.org/protobuf/encoding/protojson"
 
 	protobuf "github.com/accuknox/SentryFlow/protobuf/golang"
 )
@@ -226,7 +225,7 @@ func TestManager_eventsHandler(t *testing.T) {
 				t.Errorf("eventsHandler() gotStatusCode = %v, want %v", gotStatusCode, tt.wantStatusCode)
 			}
 			if len(tt.fields.ApiEvents) > 0 {
-				gotApiEvent, _ := protojson.Marshal(<-m.ApiEvents)
+				gotApiEvent, _ := json.Marshal(<-m.ApiEvents)
 				if !bytes.Equal(gotApiEvent, tt.wantApiEvent) {
 					t.Errorf("eventsHandler() gotApiEvent = %v, want %v", gotApiEvent, tt.wantApiEvent)
 				}
@@ -274,27 +273,23 @@ func getDummyValidApiEvent() []byte {
 			Ip:        "93.184.215.14",
 			Port:      80,
 		},
-		Req: &protobuf.APIEvent_Request{
-			Request: &protobuf.Request{
-				Headers: map[string]string{
-					":authority": "example.com",
-					":method":    "GET",
-					":path":      "/",
-					":scheme":    "http",
-				},
-				Body: "request body",
+		Request: &protobuf.Request{
+			Headers: map[string]string{
+				":authority": "example.com",
+				":method":    "GET",
+				":path":      "/",
+				":scheme":    "http",
 			},
+			Body: "request body",
 		},
-		Res: &protobuf.APIEvent_Response{
-			Response: &protobuf.Response{
-				Headers: map[string]string{
-					":status": "200",
-				},
-				Body: "response body",
+		Response: &protobuf.Response{
+			Headers: map[string]string{
+				":status": "200",
 			},
+			Body: "response body",
 		},
 		Protocol: "HTTP/1.1",
 	}
-	body, _ := protojson.Marshal(apiEvent)
+	body, _ := json.Marshal(apiEvent)
 	return body
 }

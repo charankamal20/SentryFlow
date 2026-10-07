@@ -69,26 +69,26 @@ class APILog(_message.Message):
     def __init__(self, id: _Optional[int] = ..., timeStamp: _Optional[str] = ..., srcNamespace: _Optional[str] = ..., srcName: _Optional[str] = ..., srcLabel: _Optional[_Mapping[str, str]] = ..., srcType: _Optional[str] = ..., srcIP: _Optional[str] = ..., srcPort: _Optional[str] = ..., dstNamespace: _Optional[str] = ..., dstName: _Optional[str] = ..., dstLabel: _Optional[_Mapping[str, str]] = ..., dstType: _Optional[str] = ..., dstIP: _Optional[str] = ..., dstPort: _Optional[str] = ..., protocol: _Optional[str] = ..., method: _Optional[str] = ..., path: _Optional[str] = ..., responseCode: _Optional[int] = ...) -> None: ...
 
 class APIEvent(_message.Message):
-    __slots__ = ("metadata", "source", "destination", "request", "dns_request", "response", "dns_response", "protocol", "latency_ms")
+    __slots__ = ("metadata", "source", "destination", "request", "response", "protocol", "latency_ms", "dns_request", "dns_response")
     METADATA_FIELD_NUMBER: _ClassVar[int]
     SOURCE_FIELD_NUMBER: _ClassVar[int]
     DESTINATION_FIELD_NUMBER: _ClassVar[int]
     REQUEST_FIELD_NUMBER: _ClassVar[int]
-    DNS_REQUEST_FIELD_NUMBER: _ClassVar[int]
     RESPONSE_FIELD_NUMBER: _ClassVar[int]
-    DNS_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     PROTOCOL_FIELD_NUMBER: _ClassVar[int]
     LATENCY_MS_FIELD_NUMBER: _ClassVar[int]
+    DNS_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    DNS_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     metadata: Metadata
     source: Workload
     destination: Workload
     request: Request
-    dns_request: DNSRequest
     response: Response
-    dns_response: DNSResponse
     protocol: str
     latency_ms: int
-    def __init__(self, metadata: _Optional[_Union[Metadata, _Mapping]] = ..., source: _Optional[_Union[Workload, _Mapping]] = ..., destination: _Optional[_Union[Workload, _Mapping]] = ..., request: _Optional[_Union[Request, _Mapping]] = ..., dns_request: _Optional[_Union[DNSRequest, _Mapping]] = ..., response: _Optional[_Union[Response, _Mapping]] = ..., dns_response: _Optional[_Union[DNSResponse, _Mapping]] = ..., protocol: _Optional[str] = ..., latency_ms: _Optional[int] = ...) -> None: ...
+    dns_request: DNSRequest
+    dns_response: DNSResponse
+    def __init__(self, metadata: _Optional[_Union[Metadata, _Mapping]] = ..., source: _Optional[_Union[Workload, _Mapping]] = ..., destination: _Optional[_Union[Workload, _Mapping]] = ..., request: _Optional[_Union[Request, _Mapping]] = ..., response: _Optional[_Union[Response, _Mapping]] = ..., protocol: _Optional[str] = ..., latency_ms: _Optional[int] = ..., dns_request: _Optional[_Union[DNSRequest, _Mapping]] = ..., dns_response: _Optional[_Union[DNSResponse, _Mapping]] = ...) -> None: ...
 
 class Metadata(_message.Message):
     __slots__ = ("context_id", "timestamp", "istio_version", "mesh_id", "node_name", "receiver_name", "receiver_version")

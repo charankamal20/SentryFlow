@@ -261,19 +261,17 @@ type APIEvent struct {
 	Metadata    *Metadata              `protobuf:"bytes,1,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	Source      *Workload              `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
 	Destination *Workload              `protobuf:"bytes,4,opt,name=destination,proto3" json:"destination,omitempty"`
-	// Types that are valid to be assigned to Req:
-	//
-	//	*APIEvent_Request
-	//	*APIEvent_DnsRequest
-	Req isAPIEvent_Req `protobuf_oneof:"req"`
-	// Types that are valid to be assigned to Res:
-	//
-	//	*APIEvent_Response
-	//	*APIEvent_DnsResponse
-	Res      isAPIEvent_Res `protobuf_oneof:"res"`
-	Protocol string         `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
+	Request     *Request               `protobuf:"bytes,5,opt,name=request,proto3" json:"request,omitempty"`
+	Response    *Response              `protobuf:"bytes,6,opt,name=response,proto3" json:"response,omitempty"`
+	Protocol    string                 `protobuf:"bytes,7,opt,name=protocol,proto3" json:"protocol,omitempty"`
 	// End-to-end observed latency in milliseconds.
-	LatencyMs     uint32 `protobuf:"varint,8,opt,name=latency_ms,json=latencyMs,proto3" json:"latency_ms,omitempty"`
+	LatencyMs uint32 `protobuf:"varint,8,opt,name=latency_ms,json=latencyMs,proto3" json:"latency_ms,omitempty"`
+	// DNS-specific fields. Populated only for DNS events (protocol DNS/*), in
+	// which case request/response are left unset; for regular API events these
+	// stay unset. Kept as plain fields (not a oneof) so generated Go accessors
+	// for existing fields remain unchanged.
+	DnsRequest    *DNSRequest  `protobuf:"bytes,9,opt,name=dns_request,json=dnsRequest,proto3" json:"dns_request,omitempty"`
+	DnsResponse   *DNSResponse `protobuf:"bytes,10,opt,name=dns_response,json=dnsResponse,proto3" json:"dns_response,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -329,52 +327,16 @@ func (x *APIEvent) GetDestination() *Workload {
 	return nil
 }
 
-func (x *APIEvent) GetReq() isAPIEvent_Req {
-	if x != nil {
-		return x.Req
-	}
-	return nil
-}
-
 func (x *APIEvent) GetRequest() *Request {
 	if x != nil {
-		if x, ok := x.Req.(*APIEvent_Request); ok {
-			return x.Request
-		}
-	}
-	return nil
-}
-
-func (x *APIEvent) GetDnsRequest() *DNSRequest {
-	if x != nil {
-		if x, ok := x.Req.(*APIEvent_DnsRequest); ok {
-			return x.DnsRequest
-		}
-	}
-	return nil
-}
-
-func (x *APIEvent) GetRes() isAPIEvent_Res {
-	if x != nil {
-		return x.Res
+		return x.Request
 	}
 	return nil
 }
 
 func (x *APIEvent) GetResponse() *Response {
 	if x != nil {
-		if x, ok := x.Res.(*APIEvent_Response); ok {
-			return x.Response
-		}
-	}
-	return nil
-}
-
-func (x *APIEvent) GetDnsResponse() *DNSResponse {
-	if x != nil {
-		if x, ok := x.Res.(*APIEvent_DnsResponse); ok {
-			return x.DnsResponse
-		}
+		return x.Response
 	}
 	return nil
 }
@@ -393,37 +355,19 @@ func (x *APIEvent) GetLatencyMs() uint32 {
 	return 0
 }
 
-type isAPIEvent_Req interface {
-	isAPIEvent_Req()
+func (x *APIEvent) GetDnsRequest() *DNSRequest {
+	if x != nil {
+		return x.DnsRequest
+	}
+	return nil
 }
 
-type APIEvent_Request struct {
-	Request *Request `protobuf:"bytes,5,opt,name=request,proto3,oneof"`
+func (x *APIEvent) GetDnsResponse() *DNSResponse {
+	if x != nil {
+		return x.DnsResponse
+	}
+	return nil
 }
-
-type APIEvent_DnsRequest struct {
-	DnsRequest *DNSRequest `protobuf:"bytes,9,opt,name=dns_request,json=dnsRequest,proto3,oneof"`
-}
-
-func (*APIEvent_Request) isAPIEvent_Req() {}
-
-func (*APIEvent_DnsRequest) isAPIEvent_Req() {}
-
-type isAPIEvent_Res interface {
-	isAPIEvent_Res()
-}
-
-type APIEvent_Response struct {
-	Response *Response `protobuf:"bytes,6,opt,name=response,proto3,oneof"`
-}
-
-type APIEvent_DnsResponse struct {
-	DnsResponse *DNSResponse `protobuf:"bytes,10,opt,name=dns_response,json=dnsResponse,proto3,oneof"`
-}
-
-func (*APIEvent_Response) isAPIEvent_Res() {}
-
-func (*APIEvent_DnsResponse) isAPIEvent_Res() {}
 
 type Metadata struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -1420,22 +1364,20 @@ const file_sentryflow_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a;\n" +
 	"\rDstLabelEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x02\x18\x01\"\xbb\x03\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01:\x02\x18\x01\"\xa5\x03\n" +
 	"\bAPIEvent\x12.\n" +
 	"\bmetadata\x18\x01 \x01(\v2\x12.protobuf.MetadataR\bmetadata\x12*\n" +
 	"\x06source\x18\x03 \x01(\v2\x12.protobuf.WorkloadR\x06source\x124\n" +
-	"\vdestination\x18\x04 \x01(\v2\x12.protobuf.WorkloadR\vdestination\x12-\n" +
-	"\arequest\x18\x05 \x01(\v2\x11.protobuf.RequestH\x00R\arequest\x127\n" +
-	"\vdns_request\x18\t \x01(\v2\x14.protobuf.DNSRequestH\x00R\n" +
-	"dnsRequest\x120\n" +
-	"\bresponse\x18\x06 \x01(\v2\x12.protobuf.ResponseH\x01R\bresponse\x12:\n" +
-	"\fdns_response\x18\n" +
-	" \x01(\v2\x15.protobuf.DNSResponseH\x01R\vdnsResponse\x12\x1a\n" +
+	"\vdestination\x18\x04 \x01(\v2\x12.protobuf.WorkloadR\vdestination\x12+\n" +
+	"\arequest\x18\x05 \x01(\v2\x11.protobuf.RequestR\arequest\x12.\n" +
+	"\bresponse\x18\x06 \x01(\v2\x12.protobuf.ResponseR\bresponse\x12\x1a\n" +
 	"\bprotocol\x18\a \x01(\tR\bprotocol\x12\x1d\n" +
 	"\n" +
-	"latency_ms\x18\b \x01(\rR\tlatencyMsB\x05\n" +
-	"\x03reqB\x05\n" +
-	"\x03res\"\xf6\x01\n" +
+	"latency_ms\x18\b \x01(\rR\tlatencyMs\x125\n" +
+	"\vdns_request\x18\t \x01(\v2\x14.protobuf.DNSRequestR\n" +
+	"dnsRequest\x128\n" +
+	"\fdns_response\x18\n" +
+	" \x01(\v2\x15.protobuf.DNSResponseR\vdnsResponse\"\xf6\x01\n" +
 	"\bMetadata\x12\x1d\n" +
 	"\n" +
 	"context_id\x18\x01 \x01(\rR\tcontextId\x12\x1c\n" +
@@ -1608,8 +1550,8 @@ var file_sentryflow_proto_depIdxs = []int32{
 	4,  // 3: protobuf.APIEvent.source:type_name -> protobuf.Workload
 	4,  // 4: protobuf.APIEvent.destination:type_name -> protobuf.Workload
 	5,  // 5: protobuf.APIEvent.request:type_name -> protobuf.Request
-	7,  // 6: protobuf.APIEvent.dns_request:type_name -> protobuf.DNSRequest
-	6,  // 7: protobuf.APIEvent.response:type_name -> protobuf.Response
+	6,  // 6: protobuf.APIEvent.response:type_name -> protobuf.Response
+	7,  // 7: protobuf.APIEvent.dns_request:type_name -> protobuf.DNSRequest
 	8,  // 8: protobuf.APIEvent.dns_response:type_name -> protobuf.DNSResponse
 	18, // 9: protobuf.Workload.labels:type_name -> protobuf.Workload.LabelsEntry
 	19, // 10: protobuf.Request.headers:type_name -> protobuf.Request.HeadersEntry
@@ -1648,12 +1590,6 @@ func init() { file_sentryflow_proto_init() }
 func file_sentryflow_proto_init() {
 	if File_sentryflow_proto != nil {
 		return
-	}
-	file_sentryflow_proto_msgTypes[2].OneofWrappers = []any{
-		(*APIEvent_Request)(nil),
-		(*APIEvent_DnsRequest)(nil),
-		(*APIEvent_Response)(nil),
-		(*APIEvent_DnsResponse)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

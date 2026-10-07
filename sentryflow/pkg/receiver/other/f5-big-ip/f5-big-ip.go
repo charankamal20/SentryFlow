@@ -1,6 +1,3 @@
-// SPDX-License-Identifier: Apache-2.0
-// Copyright 2024 Authors of SentryFlow
-
 package f5bigip
 
 import (
@@ -166,18 +163,14 @@ func parseF5LogLine(line string) *pb.APIEvent {
 			Ip:        destIP,
 			Port:      int32(destPort),
 		},
-		Req: &pb.APIEvent_Request{
-			Request: &pb.Request{
-				Headers: reqHeaders,
-				Body:    reqBody,
-			},
+		Request: &pb.Request{
+			Headers: reqHeaders,
+			Body:    reqBody,
 		},
-		Res: &pb.APIEvent_Response{
-			Response: &pb.Response{
-				Headers:               respHeaders,
-				Body:                  respBody,
-				BackendLatencyInNanos: uint64((respTime - reqTime) * 1_000_000),
-			},
+		Response: &pb.Response{
+			Headers:               respHeaders,
+			Body:                  respBody,
+			BackendLatencyInNanos: uint64((respTime - reqTime) * 1_000_000),
 		},
 		Protocol: protocol,
 	}

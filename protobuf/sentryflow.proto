@@ -43,18 +43,19 @@ message APIEvent {
   Metadata metadata = 1;
   Workload source = 3;
   Workload destination = 4;
-  oneof req {
-    Request request = 5;
-    DNSRequest dns_request = 9;
-  }
-  oneof res {
-    Response response = 6;
-    DNSResponse dns_response = 10;
-  }
+  Request request = 5;
+  Response response = 6;
   string protocol = 7;
 
   // End-to-end observed latency in milliseconds.
   uint32 latency_ms = 8;
+
+  // DNS-specific fields. Populated only for DNS events (protocol DNS/*), in
+  // which case request/response are left unset; for regular API events these
+  // stay unset. Kept as plain fields (not a oneof) so generated Go accessors
+  // for existing fields remain unchanged.
+  DNSRequest dns_request = 9;
+  DNSResponse dns_response = 10;
 }
 
 message Metadata {
